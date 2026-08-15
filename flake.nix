@@ -8,16 +8,28 @@
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
   };
 
-  outputs = { self, nixpkgs, nix-darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, ... }:
   {
     darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
 
+      specialArgs = {
+        inherit inputs;
+      };
+
       modules = [
       ./hosts/MacbookPro
       ];
+
     };
   };
 }

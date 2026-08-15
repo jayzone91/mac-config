@@ -35,6 +35,15 @@ Verwaltet werden sollen:
 - [x] Benutzer `jay`
 - [x] Home Manager eingebunden
 - [x] Repo: `jayzone91/mac-config`
+- [x] Konfiguration in Home- und Darwin-Module aufgeteilt
+- [x] `justfile` angelegt
+- [x] `just check`
+- [x] `just build`
+- [x] `just apply`
+- [x] `just update`
+- [x] `just fmt`
+- [x] `just status`
+- [x] `just gc`
 
 ### Neovim
 
@@ -45,8 +54,10 @@ Verwaltet werden sollen:
 - [x] statix
 - [x] nixfmt
 - [x] Nix-Formatting funktioniert
+- [x] Neovim als eigenes Home-Manager-Modul ausgelagert
 
 Neovim-Konfiguration:
+
 `https://github.com/jayzone91/nvim`
 
 ### Shell
@@ -54,6 +65,7 @@ Neovim-Konfiguration:
 - [x] Fish installiert
 - [x] Fish über Home Manager konfiguriert
 - [x] Fish als Login-Shell aktiviert
+- [x] Fish-Bootstrap-Sonderfall dokumentiert
 - [x] Starship aktiviert
 - [x] Catppuccin-Starship-Konfiguration
 - [x] fzf
@@ -62,121 +74,161 @@ Neovim-Konfiguration:
 - [x] bat
 - [x] fd
 - [x] ripgrep
+- [x] Shell-Konfiguration modularisiert
 
 ### Ghostty
 
-- [ ] Ghostty-Konfiguration bereinigen
+- [x] Ghostty-Konfiguration über Home Manager
+- [x] Ghostty als eigenes Modul
 - [x] Catppuccin Light/Dark
-- [ ] Font prüfen/festlegen
+- [x] Standard-Font funktioniert inkl. Nerd-Font-Symbole
 - [x] Padding
 - [x] macOS Titlebar
 - [x] Shell Integration
-- [x] Working Directory übernehmen
+- [x] Working Directory bei Fenstern/Tabs/Splits übernehmen
 - [x] Clipboard-Verhalten
 - [x] Tabs/Splits
 - [x] Quick Terminal
-- [x] Keybindings
-- [ ] Transparenz/Blur prüfen
+- [x] globaler Shortcut `Ctrl+Shift+Space`
+- [x] deutsche Tastatur berücksichtigt
+- [x] linke Option-Taste als Alt
+- [x] Accessibility/TCC für globalen Shortcut eingerichtet
+- [ ] Transparenz/Blur optional prüfen
 
 ---
 
 ## macOS Systemeinstellungen
 
-Noch vollständig umzusetzen.
+Die wesentlichen Systemdefaults sind inzwischen deklarativ umgesetzt.
 
 ### Allgemein
 
-- [ ] Sprache/Region prüfen
-- [ ] Zeitzone Europe/Berlin
-- [ ] automatische macOS Sicherheitsupdates
-- [ ] App Store Updates automatisch
-- [ ] Hintergrundupdates
-- [ ] Dokumente standardmäßig lokal statt iCloud speichern
+- [ ] Sprache/Region explizit deklarieren
+- [ ] Zeitzone Europe/Berlin explizit deklarieren
+- [x] automatische macOS Updates
+- [x] automatische Security-/Critical-Updates
+- [x] automatische Hintergrund-/ConfigData-Updates
+- [x] App Store Updates automatisch
+- [x] neue Dokumente standardmäßig lokal statt iCloud speichern
+- [x] metrische Einheiten
+- [x] Celsius
+- [x] 24-Stunden-Zeit
 
 ### Tastatur
 
-- [ ] schnelle Key Repeat Rate
-- [ ] kurze Initial Key Repeat Delay
-- [ ] Press-and-Hold deaktivieren
-- [ ] Smart Quotes behalten
-- [ ] Smart Dashes behalten
-- [ ] Rechtschreibkorrektur behalten
-- [ ] automatische Großschreibung behalten
+- [x] schnelle Key Repeat Rate
+- [x] kurze Initial Key Repeat Delay
+- [x] Press-and-Hold deaktiviert
+- [x] Smart Quotes behalten
+- [x] Smart Dashes behalten
+- [x] Rechtschreibkorrektur behalten
+- [x] automatische Großschreibung behalten
 
 Editoren sollen Smart Quotes etc. selbst deaktivieren bzw. nicht verwenden.
 
 ### Trackpad
 
-- [ ] Tap to Click
-- [ ] Rechtsklick
-- [ ] Drei-Finger-Drag prüfen
-- [ ] Force Click prüfen
-- [ ] Tracking Speed prüfen
-- [ ] Scroll-Verhalten prüfen
+- [x] Tap to Click
+- [x] Rechtsklick
+- [x] Drei-Finger-Drag
+- [x] Force-Click-Schwelle gesetzt
+- [x] Tracking Speed angepasst
+- [ ] Scroll-Verhalten bei Bedarf noch prüfen
 
 ### Finder
 
-- [ ] Dateiendungen immer anzeigen
-- [ ] Pfadleiste anzeigen
-- [ ] Statusleiste anzeigen
-- [ ] POSIX-Pfad im Titel
-- [ ] Suchbereich sinnvoll setzen
-- [ ] Warnung beim Ändern von Dateiendungen deaktivieren
-- [ ] versteckte Dateien im Finder standardmäßig nicht anzeigen
+- [x] Dateiendungen immer anzeigen
+- [x] Pfadleiste anzeigen
+- [x] Statusleiste anzeigen
+- [x] POSIX-Pfad im Titel
+- [x] Suche standardmäßig im aktuellen Ordner
+- [x] Warnung beim Ändern von Dateiendungen deaktiviert
+- [x] versteckte Dateien im Finder standardmäßig nicht anzeigen
 - [ ] keine `.DS_Store` auf Netzwerkshares
 - [ ] keine `.DS_Store` auf USB-Laufwerken
-- [ ] externe Datenträger auf Desktop anzeigen
-- [ ] Server nicht auf Desktop anzeigen
+- [x] externe Datenträger auf Desktop anzeigen
+- [x] Server nicht auf Desktop anzeigen
+- [x] Listenansicht als Standard
 
 ### Dock
 
-- [ ] Autohide
-- [ ] kurze Autohide-Verzögerung
-- [ ] kurze Animation
-- [ ] keine Recent Apps
-- [ ] Minimize into Application
-- [ ] feste Dock-Größe
-- [ ] gewünschte Apps
-- [ ] Downloads/Applications Stack
+- [x] Autohide
+- [x] keine Autohide-Verzögerung
+- [x] kurze Animation
+- [x] keine Recent Apps
+- [x] Minimize into Application
+- [x] feste Dock-Größe
+- [x] App-Indikatoren aktiv
+- [x] ausgeblendete Apps transparent anzeigen
+- [x] Dock unten
+- [ ] gewünschte Apps deklarativ festlegen
+- [ ] Downloads/Applications Stack deklarativ festlegen
 
 ### Desktop / Mission Control
 
-- [ ] Stage Manager aus
-- [ ] Verhalten bei Klick auf Desktop prüfen
-- [ ] Widgets-Verhalten
-- [ ] Spaces nicht automatisch umsortieren
-- [ ] iPad/Sidecar weiterhin möglich
-- [ ] Multi-Monitor-spezifische Einstellungen nicht nötig
+- [x] Stage Manager aus
+- [x] Klick auf Desktop blendet Fenster nicht aus
+- [x] Spaces nicht automatisch umsortieren
+- [x] Hot Corners deaktiviert
+- [ ] Widgets-Verhalten prüfen
+- [x] iPad/Sidecar weiterhin möglich
+- [x] keine Multi-Monitor-Sonderkonfiguration notwendig
 
 ### Screenshots
 
-- [ ] Zielordner `~/Pictures/Screenshots`
-- [ ] PNG oder ggf. anderes Format prüfen
-- [ ] Schatten-Verhalten prüfen
+- [x] Zielordner `~/Pictures/Screenshots`
+- [x] PNG
+- [x] Fensterschatten deaktiviert
+- [x] Screenshot-Verzeichnis wird bereitgestellt
 
 ### Menüleiste
 
-- [ ] Bartender übernimmt Verwaltung
-- [ ] Uhrzeit
-- [ ] Datum immer anzeigen
+- [x] Bartender übernimmt Verwaltung
+- [x] 24-Stunden-Uhr
+- [x] Datum immer anzeigen
+- [x] Wochentag anzeigen
+- [x] Sekunden aus
 
 ### Sicherheit
 
-- [ ] Firewall aktiv
-- [ ] Stealth Mode aktiv
-- [ ] Touch ID für sudo
+- [x] Firewall aktiv
+- [x] Stealth Mode aktiv
+- [x] signierte Apps erlaubt
+- [x] Touch ID für sudo
 - [ ] FileVault Status prüfen
-- [ ] Gatekeeper nicht abschalten
-- [ ] TCC-Berechtigungen dokumentieren
+- [ ] FileVault / Recovery-Key-Strategie festlegen
+- [x] Gatekeeper nicht deaktiviert
+- [x] Ghostty Accessibility/TCC eingerichtet
+- [ ] weitere TCC-Berechtigungen dokumentieren
+- [ ] TCC-Schritte in Bootstrap integrieren
 
 ### Energie
 
-- [ ] Battery Display Sleep
-- [ ] Battery System Sleep
-- [ ] Netzbetrieb Display Sleep
-- [ ] Netzbetrieb System Sleep
-- [ ] Power Nap prüfen
-- [ ] Wake on LAN prüfen
+#### Akku
+
+- [x] Display Sleep: 5 Minuten
+- [x] System Sleep: 10 Minuten
+- [x] Power Nap aus
+- [x] Wake on LAN aus
+- [x] TCP Keepalive an
+- [x] Low Power Mode nicht erzwungen
+
+#### Netzbetrieb
+
+- [x] Display Sleep: 15 Minuten
+- [x] System Sleep: aus
+- [x] Power Nap an
+- [x] Wake on LAN an
+- [x] TCP Keepalive an
+- [x] Low Power Mode aus
+
+Nicht verändert:
+
+- Standby
+- Hibernatemode
+- Hibernatefile
+- tty keep awake
+- Disk Sleep
 
 ---
 
@@ -188,7 +240,7 @@ Editoren sollen Smart Quotes etc. selbst deaktivieren bzw. nicht verwenden.
 - [ ] AppCleaner
 - [ ] Bloons TD 6+
 - [ ] DockDoor
-- [ ] Ghostty
+- [x] Ghostty vorhanden und konfiguriert
 - [ ] GitHub Desktop
 - [ ] Google Chrome Dev
 - [ ] OpenVPN Connect
@@ -202,6 +254,8 @@ Editoren sollen Smart Quotes etc. selbst deaktivieren bzw. nicht verwenden.
 
 ### Setapp
 
+Behalten:
+
 - [ ] Bartender
 - [ ] CleanMyMac
 - [ ] iBoysoft NTFS
@@ -210,6 +264,12 @@ Editoren sollen Smart Quotes etc. selbst deaktivieren bzw. nicht verwenden.
 - [ ] PDF Squeezer
 
 Setapp Login/Aktivierung wird wahrscheinlich teilweise manuell bleiben.
+
+Zu prüfen:
+
+- [ ] welche Setapp-Apps per CLI installierbar sind
+- [ ] welche Apps zwingend GUI benötigen
+- [ ] wie Setapp im Bootstrap installiert und gestartet wird
 
 ### Entfernen / nicht installieren
 
@@ -245,9 +305,9 @@ Xcode Command Line Tools bleiben erforderlich.
 
 ## Developer Tools
 
-Global:
+Global vorhanden:
 
-- [ ] git
+- [ ] git explizit über Nix verwalten
 - [ ] gh
 - [ ] wget
 - [ ] jq
@@ -257,9 +317,13 @@ Global:
 - [x] eza
 - [x] fzf
 - [x] zoxide
+- [x] nil
+- [x] statix
+- [x] nixfmt
+- [x] just
+- [x] Neovim Nightly
 - [ ] direnv
 - [ ] nix-direnv
-- [x] Neovim Nightly
 - [ ] tree-sitter-cli
 - [ ] Node LTS
 - [ ] npm
@@ -269,9 +333,35 @@ Global:
 
 Projektabhängige Toolchains sollen in Projekt-Flakes liegen.
 
+Nicht global installieren:
+
+- cmake
+- ninja
+- pnpm
+- LuaRocks
+- PHP
+- Composer
+- sqlc
+- Go-Tools
+- air
+- templ
+- ginkgo
+- mockgen
+
 ---
 
 ## Updates
+
+### macOS
+
+- [x] automatische Prüfung
+- [x] automatische Downloads
+- [x] automatische macOS Updates
+- [x] Critical Updates
+- [x] ConfigData Updates
+- [x] App Store Auto-Updates
+
+### mac-config
 
 Ziel:
 
@@ -280,35 +370,75 @@ Ziel:
 - [ ] `nix flake update`
 - [ ] vollständiger Build
 - [ ] nur bei erfolgreichem Build aktivieren
-- [ ] Homebrew Update
-- [ ] Homebrew Upgrade
-- [ ] MAS Updates
-- [ ] Cleanup
 - [ ] Logging
 - [ ] Fehler sollen laufendes System nicht beschädigen
+- [ ] Cleanup
+- [ ] Rollback-Verhalten definieren
+
+### Homebrew
+
+- [ ] tägliches `brew update`
+- [ ] tägliches `brew upgrade`
+- [ ] Cask Updates
+- [ ] Formula Updates
+
+### Mac App Store
+
+- [ ] MAS Updates automatisieren
+
+### Toolchains
 
 Node:
-- aktuelle LTS-Linie
+
+- [ ] aktuelle LTS-Linie automatisch verwalten
+- [ ] tägliche Update-Prüfung
 
 Bun:
-- aktuelle stabile Version
+
+- [ ] aktuelle stabile Version automatisch verwalten
+- [ ] tägliche Update-Prüfung
 
 Go:
-- aktuelle stabile Version
+
+- [ ] aktuelle stabile Version automatisch verwalten
+- [ ] tägliche Update-Prüfung
 
 Python:
-- aktuelle stabile Version
+
+- [ ] aktuelle stabile Version automatisch verwalten
+- [ ] tägliche Update-Prüfung
+
+Neovim:
+
+- [x] Nightly über Flake/Input
+- [ ] Update-Automation über täglichen Flake-Update-Workflow
 
 ---
 
 ## Homebrew
 
-- [ ] nix-homebrew einbinden
+Nächster großer Arbeitsblock.
+
+Ziel:
+
+- [ ] `nix-homebrew` einbinden
 - [ ] Homebrew automatisch installieren
-- [ ] Casks deklarativ verwalten
+- [ ] `/opt/homebrew` auf Apple Silicon sauber verwalten
 - [ ] Formulae deklarativ verwalten
+- [ ] Casks deklarativ verwalten
 - [ ] MAS integrieren
+- [ ] `mas` verwalten
 - [ ] tägliche Updates
+- [ ] Cleanup
+- [ ] Ownership zwischen Nix und Brew klar trennen
+
+Zu entscheiden:
+
+- [ ] welche CLI-Tools über Nix laufen
+- [ ] welche GUI-Apps über Homebrew Casks laufen
+- [ ] welche Apps über MAS laufen
+- [ ] welche Apps über Setapp laufen
+- [ ] doppelte Installation derselben App verhindern
 
 ---
 
@@ -332,6 +462,12 @@ Verschlüsseln:
 
 Mail-Adressen sollen nicht im Klartext im Repository stehen.
 
+Zu prüfen:
+
+- [ ] Apple Passwords als mögliche Secret-Quelle
+- [ ] GitHub Secrets nur für CI/CD verwenden
+- [ ] lokale Secrets unabhängig von GitHub verfügbar machen
+
 ---
 
 ## Mail
@@ -342,10 +478,13 @@ Zusätzliche Accounts:
 
 - ausschließlich IMAP/SMTP
 - [ ] Accounts deklarativ beschreiben
+- [ ] Mail-Adressen nicht im Klartext speichern
 - [ ] Daten aus sops laden
 - [ ] Konfigurationsprofil erzeugen
 - [ ] Mail.app Accounts provisionieren
 - [ ] Profilinstallation automatisieren soweit macOS erlaubt
+- [ ] Account-Aktivierung / Passwortbereitstellung testen
+- [ ] prüfen, welche Einstellungen Apple Mail nach Profilinstallation übernimmt
 
 ---
 
@@ -354,9 +493,12 @@ Zusätzliche Accounts:
 - [ ] Installation automatisieren
 - [ ] Autostart
 - [ ] Preferences über iCloud oder deklarativ
-- [ ] Powerpack-Lizenz verschlüsselt speichern
+- [ ] vorhandene Powerpack-Lizenz automatisiert aktivieren
+- [ ] Lizenz aus bestehender Installation auslesen
+- [ ] Lizenz verschlüsselt speichern
 - [ ] unterstützte Aktivierungsmöglichkeiten prüfen
 - [ ] Accessibility/TCC bleibt ggf. manuell
+- [ ] Alfred-TCC-Schritte dokumentieren
 
 ---
 
@@ -380,8 +522,10 @@ Soll:
 - [ ] Fish als Login-Shell setzen
 - [ ] Secrets initialisieren
 - [ ] App Store Login voraussetzen/prüfen
+- [ ] Homebrew initialisieren
 - [ ] Setapp vorbereiten
-- [ ] manuelle TCC-Schritte ausgeben
+- [ ] Ghostty TCC/Accessibility-Schritt ausgeben
+- [ ] weitere manuelle TCC-Schritte ausgeben
 - [ ] Abschlussprüfung
 
 ### Fish Bootstrap Sonderfall
@@ -399,6 +543,45 @@ grep -qxF "$FISH_PATH" /etc/shells ||
 chsh -s "$FISH_PATH"
 ```
 
+### Home-Manager Altbestand
+
+Bei bestehenden Systemen können alte Dateien Home-Manager-Aktivierungen blockieren.
+
+Beispiel:
+
+```text
+~/.config/fish/config.fish
+```
+
+Vor Übernahme durch Home Manager:
+
+- vorhandene Datei prüfen
+- bei Bedarf sichern
+- Altbestand entfernen
+- Home Manager erneut aktivieren
+
+Auf einer sauberen Neuinstallation sollte dieser Migrationsschritt nicht nötig sein.
+
+---
+
+## Manuelle / nicht vollständig deklarative Schritte
+
+Aktuell bekannt:
+
+- [x] Fish einmalig als Login-Shell setzen
+- [x] Ghostty Accessibility für globalen Quick-Terminal-Shortcut
+- [ ] Apple ID / iCloud Login
+- [ ] App Store Login
+- [ ] Setapp Login
+- [ ] ggf. Setapp App-Aktivierungen
+- [ ] ggf. Alfred Accessibility
+- [ ] ggf. Alfred Lizenzaktivierung
+- [ ] Mail-Passwort-/Profil-Aktivierung
+- [ ] FileVault Recovery-Key-Handling
+- [ ] weitere TCC-Berechtigungen
+
+Diese Schritte sollen später im Bootstrap klar ausgegeben werden.
+
 ---
 
 ## Bekannte Warnungen
@@ -408,21 +591,28 @@ chsh -s "$FISH_PATH"
 Aktuell erscheint beim Build:
 
 ```text
-Using 'builtins.derivation' to create a derivation named 'options.json' ...
-without a proper context.
+Using 'builtins.derivation' to create a derivation named 'options.json'
+that references the store path '...-source' without a proper context.
+The resulting derivation will not have a correct store reference,
+so this is unreliable and may stop working in the future.
 ```
 
 Der Build läuft trotzdem erfolgreich durch.
 
 Die Warnung stammt nicht aus eigener `builtins.derivation`-Logik in diesem Repo.
-Bis eine konkrete Ursache in nixpkgs/Home Manager/nix-darwin identifiziert ist,
-nicht durch lokale Workarounds unterdrücken.
+
+Bis eine konkrete Ursache in nixpkgs/Home Manager/nix-darwin identifiziert ist:
+
+- keine lokalen Workarounds
+- Warnung nicht unterdrücken
+- bei zukünftigen Updates beobachten
+- später gegen aktuelle Upstream-Versionen erneut prüfen
 
 ---
 
 ## Repo-Struktur
 
-Geplant:
+Aktuell / geplant:
 
 ```text
 mac-config/
@@ -446,9 +636,67 @@ mac-config/
 │       └── ghostty.nix
 └── modules/
     └── darwin/
-        ├── defaults.nix
+        ├── defaults/
+        │   ├── default.nix
+        │   ├── global.nix
+        │   ├── finder.nix
+        │   ├── dock.nix
+        │   ├── trackpad.nix
+        │   ├── desktop.nix
+        │   └── ui.nix
         ├── security.nix
-        ├── homebrew.nix
         ├── updates.nix
+        ├── power.nix
+        ├── homebrew.nix
         └── mail.nix
 ```
+
+---
+
+## Nächste Schritte
+
+### 1. Homebrew / Softwareverwaltung
+
+- `nix-homebrew`
+- Casks
+- Formulae
+- MAS
+- Zuständigkeit pro App festlegen
+- bestehende Softwareliste gegen aktuellen Mac prüfen
+
+### 2. Developer Toolchains
+
+- Node LTS
+- npm
+- Bun
+- Go
+- Python
+- direnv / nix-direnv
+
+### 3. Secrets
+
+- sops-nix
+- age
+- Mail-Secrets
+- Alfred-Lizenz
+
+### 4. Mail
+
+- IMAP/SMTP Accounts
+- Profile
+- Provisionierung
+
+### 5. Automatische Updates
+
+- mac-config
+- Nix Flakes
+- Homebrew
+- MAS
+- Toolchains
+- Logging / Rollback
+
+### 6. Finaler Bootstrap
+
+Ziel:
+
+Ein frisch installiertes macOS benötigt nach dem Setup Assistant nur noch einen klar definierten Bootstrap-Prozess und wenige unvermeidbare manuelle Apple-/TCC-Schritte.

@@ -66,16 +66,16 @@ Neovim-Konfiguration:
 ### Ghostty
 
 - [ ] Ghostty-Konfiguration bereinigen
-- [ ] Catppuccin Light/Dark
+- [x] Catppuccin Light/Dark
 - [ ] Font prüfen/festlegen
-- [ ] Padding
-- [ ] macOS Titlebar
-- [ ] Shell Integration
-- [ ] Working Directory übernehmen
-- [ ] Clipboard-Verhalten
-- [ ] Tabs/Splits
-- [ ] Quick Terminal
-- [ ] Keybindings
+- [x] Padding
+- [x] macOS Titlebar
+- [x] Shell Integration
+- [x] Working Directory übernehmen
+- [x] Clipboard-Verhalten
+- [x] Tabs/Splits
+- [x] Quick Terminal
+- [x] Keybindings
 - [ ] Transparenz/Blur prüfen
 
 ---

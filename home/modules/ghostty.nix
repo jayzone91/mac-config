@@ -35,7 +35,7 @@ _:
       quick-terminal-animation-duration = 0.15;
 
       keybind = [
-      "global:ctrl+backquote=toggle_quick_terminal"
+      "global:ctrl+shift+space=toggle_quick_terminal"
       ];
     };
   };

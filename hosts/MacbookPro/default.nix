@@ -3,6 +3,8 @@
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
+    ../../modules/darwin/defaults
+    ../../modules/darwin/security.nix
   ];
 
   nix.enable = false;

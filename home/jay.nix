@@ -15,6 +15,7 @@
     packages = [
       pkgs.fd
       pkgs.ripgrep
+      pkgs.just
     ];
   };
 

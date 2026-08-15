@@ -244,8 +244,8 @@ Nix / Home Manager
 Homebrew
 └── GUI-Apps / Casks
 
-Mac App Store
-└── App-Store-Apps
+programs.mas
+└── Mac-App-Store-Apps
 
 Setapp
 └── Setapp-Apps
@@ -270,6 +270,7 @@ Doppelte Installation derselben Software über mehrere Paketmanager soll vermied
 - [x] alte CLI-Formulae bereinigt
 - [x] alte Drittanbieter-Taps entfernt
 - [x] CLI-Tools aus Homebrew nach Nix verschoben
+- [x] Cask-Verwaltung deklarativ
 - [x] `cleanup = "uninstall"`
 - [ ] tägliche Homebrew-Updates automatisieren
 
@@ -332,9 +333,20 @@ Bereinigt:
 
 ## Mac App Store
 
-`mas` wird über Nix bereitgestellt.
+`mas` wird über das native nix-darwin-Modul `programs.mas` bereitgestellt und verwaltet.
 
-Deklarativ verwaltet:
+### Basis
+
+- [x] `programs.mas.enable = true`
+- [x] `mas` kommt aus dem Nix-Systemprofil
+- [x] keine parallele Homebrew-Installation von `mas`
+- [x] Homebrew `masApps` entfernt
+- [x] fehlende Apps werden beim Switch installiert
+- [x] unerwünschte Apps können über `cleanup` entfernt werden
+- [x] App-Store-Login wird bei fehlender Anmeldung sauber behandelt
+- [x] App-Updates laufen über macOS Auto-Updates statt bei jedem Switch
+
+### Deklarativ verwaltet
 
 - [x] Bloons TD 6+
   - ID `1584423325`
@@ -347,7 +359,7 @@ Deklarativ verwaltet:
 - [x] Windows App
   - ID `1295203466`
 
-Entfernt / nicht mehr installieren:
+### Entfernt / nicht mehr installieren
 
 - [x] Ghostery Privacy Ad Blocker
 - [x] Microsoft Excel
@@ -423,8 +435,24 @@ Setapp Login/Aktivierung darf als manueller Bootstrap-Schritt bestehen bleiben.
 
 ## Developer Tools
 
-### Bereits über Nix / Home Manager
+### Basis
 
+Globale CLI- und Developer-Tools werden über Nix / Home Manager verwaltet.
+
+Die Pfade wurden geprüft. Nix steht jeweils vor den macOS-Systemversionen und es existieren keine aktiven Homebrew-, nvm- oder asdf-Versionen mehr im Vordergrund.
+
+### CLI-Tools
+
+- [x] git
+  - aktuell `2.55.0`
+- [x] gh
+  - aktuell `2.97.0`
+- [x] wget
+  - aktuell `1.25.0`
+- [x] jq
+  - aktuell `1.8.2`
+- [x] tree-sitter-cli
+  - aktuell `0.26.9`
 - [x] bat
 - [x] fd
 - [x] ripgrep
@@ -436,41 +464,71 @@ Setapp Login/Aktivierung darf als manueller Bootstrap-Schritt bestehen bleiben.
 - [x] nixfmt
 - [x] just
 - [x] Neovim Nightly
+- [x] direnv
+  - aktuell `2.37.1`
+- [x] nix-direnv
 - [x] mas
-
-### Noch deklarativ fertigstellen
-
-- [ ] git
-- [ ] gh
-- [ ] wget
-- [ ] jq
-- [ ] tree-sitter-cli
-- [ ] direnv
-- [ ] nix-direnv
+  - aktuell `7.0.0`
 
 ### Toolchains
 
-Node:
+#### Node
 
-- [ ] aktuelle LTS-Linie bestimmen
-- [ ] Node LTS über Nix verwalten
-- [ ] npm über Node bereitstellen
+- [x] Node 24 als aktuelle gewünschte LTS-Major-Linie
+- [x] Node über Nix verwaltet
+- [x] npm wird mit Node bereitgestellt
+- [x] keine nvm-Installation mehr
+- [x] keine Homebrew-Node-Verwaltung
+- [x] aktuell Node `24.19.0`
+- [x] aktuell npm `11.17.0`
+- [ ] automatisches Erkennen einer zukünftigen neuen LTS-Major-Linie
 - [ ] tägliche Update-Prüfung
 
-Bun:
+Aktuell bleibt die Major-Linie bewusst explizit:
 
-- [ ] aktuelle stabile Version über Nix verwalten
-- [ ] tägliche Update-Prüfung
+```nix
+nodejs_24
+```
 
-Go:
+Beim zukünftigen Wechsel auf eine neue LTS-Major soll die Konfiguration bewusst angepasst oder durch den späteren Update-Workflow unterstützt werden.
 
-- [ ] aktuelle stabile Version über Nix verwalten
-- [ ] tägliche Update-Prüfung
+#### Bun
 
-Python:
+- [x] Bun über Nix verwaltet
+- [x] keine Homebrew-Tap-Abhängigkeit mehr
+- [x] aktuell `1.3.13`
+- [ ] tägliche Update-Prüfung über Flake-Workflow
 
-- [ ] aktuelle stabile Version über Nix verwalten
-- [ ] tägliche Update-Prüfung
+#### Go
+
+- [x] Go über Nix verwaltet
+- [x] keine Homebrew-Version mehr
+- [x] aktuell `1.26.5`
+- [ ] tägliche Update-Prüfung über Flake-Workflow
+
+#### Python
+
+- [x] Python über Nix verwaltet
+- [x] keine Homebrew-Version mehr
+- [x] aktuell `3.14.7`
+- [ ] tägliche Update-Prüfung über Flake-Workflow
+
+### PATH geprüft
+
+Nix-Versionen werden bevorzugt:
+
+```text
+git      → /etc/profiles/per-user/jay/bin/git
+gh       → /etc/profiles/per-user/jay/bin/gh
+node     → /etc/profiles/per-user/jay/bin/node
+npm      → /etc/profiles/per-user/jay/bin/npm
+bun      → /etc/profiles/per-user/jay/bin/bun
+go       → /etc/profiles/per-user/jay/bin/go
+python3  → /etc/profiles/per-user/jay/bin/python3
+mas      → /run/current-system/sw/bin/mas
+```
+
+macOS darf zusätzliche Systemversionen wie `/usr/bin/git` oder `/usr/bin/python3` bereitstellen, solange Nix im PATH davor liegt.
 
 Projektabhängige Toolchains und Spezialabhängigkeiten sollen möglichst in Projekt-Flakes liegen.
 
@@ -545,11 +603,18 @@ Die entschlüsselte Lizenz soll:
 
 ## Secrets
 
+Nächster großer Arbeitsblock.
+
 Geplant:
 
-- [ ] sops-nix
-- [ ] age
-- [ ] Bootstrap-Key sicher speichern
+- [ ] sops-nix als Flake-Input einbinden
+- [ ] age installieren / bereitstellen
+- [ ] lokalen age-Key erzeugen
+- [ ] age-Key außerhalb des Repositories speichern
+- [ ] sichere Backup-/Recovery-Strategie für age-Key festlegen
+- [ ] erste `secrets.yaml` anlegen
+- [ ] Dummy-Secret zum Testen
+- [ ] Entschlüsselung über nix-darwin testen
 - [ ] keine Klartext-Secrets im Repo
 
 Verschlüsseln:
@@ -569,6 +634,7 @@ Zu prüfen:
 - [ ] GitHub Secrets nur für CI/CD verwenden
 - [ ] lokale Secrets unabhängig von GitHub verfügbar machen
 - [ ] Recovery-/Bootstrap-Strategie für age-Key
+- [ ] wie der age-Key auf einem frisch installierten Mac sicher bereitgestellt wird
 
 ---
 
@@ -627,8 +693,9 @@ Homebrew soll nicht bei jedem `darwin-rebuild` ungefragt Updates durchführen.
 
 ### Mac App Store
 
+- [x] App-Store-Apps deklarativ über `programs.mas`
 - [x] automatische App-Store-Updates über macOS aktiviert
-- [ ] Verhalten mit deklarativen `masApps` auf neuem System testen
+- [ ] Verhalten auf komplett frisch installiertem Mac testen
 
 ### Neovim
 
@@ -638,6 +705,8 @@ Homebrew soll nicht bei jedem `darwin-rebuild` ungefragt Updates durchführen.
 ### Toolchains
 
 Node, Bun, Go und Python sollen über den täglichen Nix-/Flake-Update-Workflow aktuell gehalten werden.
+
+Bei Node soll zusätzlich erkannt werden, wenn eine neue LTS-Major-Linie verfügbar ist.
 
 ---
 
@@ -663,7 +732,7 @@ Soll:
 - [ ] age-Key bereitstellen
 - [ ] App Store Login voraussetzen/prüfen
 - [ ] Homebrew initialisieren
-- [ ] MAS-Apps installieren
+- [ ] MAS-Apps über `programs.mas` installieren
 - [ ] Setapp vorbereiten
 - [ ] Setapp Login anfordern
 - [ ] gewünschte Setapp-Apps prüfen
@@ -723,6 +792,7 @@ Aktuell bekannt:
 - [ ] Alfred Powerpack-Aktivierung, falls keine unterstützte Automation existiert
 - [ ] Mail-Passwort-/Profil-Aktivierung
 - [ ] FileVault Recovery-Key-Handling
+- [ ] age-Key auf neuem System bereitstellen
 - [ ] weitere TCC-Berechtigungen
 
 Diese Schritte sollen später im Bootstrap klar und nacheinander ausgegeben werden.
@@ -780,6 +850,8 @@ mac-config/
 │       ├── dev-tools.nix
 │       ├── neovim.nix
 │       └── ghostty.nix
+├── secrets/
+│   └── secrets.yaml
 └── modules/
     └── darwin/
         ├── defaults/
@@ -794,6 +866,8 @@ mac-config/
         ├── updates.nix
         ├── power.nix
         ├── homebrew.nix
+        ├── mas.nix
+        ├── secrets.nix
         └── mail.nix
 ```
 
@@ -801,54 +875,48 @@ mac-config/
 
 ## Nächste Schritte
 
-### 1. Developer Toolchains
-
-- git / gh / wget / jq / tree-sitter
-- direnv / nix-direnv
-- Node LTS
-- npm
-- Bun
-- Go
-- Python
-
-### 2. Secrets
+### 1. Secrets
 
 - sops-nix
 - age
-- Bootstrap-/Recovery-Strategie
-- Mail-Secrets
-- Alfred-Powerpack-Lizenz
+- age-Key erzeugen
+- sichere Key-Recovery-Strategie
+- Dummy-Secret
+- erste verschlüsselte `secrets.yaml`
 
-### 3. Alfred
+### 2. Alfred
 
+- Lizenz als Secret übernehmen
 - Autostart
 - Preferences
-- Powerpack-Lizenz aus bestehender Installation übernehmen
-- Aktivierungsworkflow
+- Powerpack-Aktivierungsworkflow
 - TCC
 
-### 4. Mail
+### 3. Mail
 
 - IMAP/SMTP Accounts
+- verschlüsselte Mail-Adressen
+- Credentials
 - Profile
 - Provisionierung
 
-### 5. Setapp Bootstrap
+### 4. Setapp Bootstrap
 
 - Login
 - App-Prüfung
 - verbleibende manuelle Schritte
 
-### 6. Automatische Updates
+### 5. Automatische Updates
 
 - mac-config
 - Nix Flakes
+- Node-LTS-Erkennung
 - Homebrew
 - Toolchains
 - Logging
 - Rollback
 
-### 7. Restliche macOS-Details
+### 6. Restliche macOS-Details
 
 - Sprache/Region
 - Zeitzone
@@ -858,8 +926,8 @@ mac-config/
 - FileVault
 - weitere TCC-Berechtigungen
 
-### 8. Finaler Bootstrap
+### 7. Finaler Bootstrap
 
 Ziel:
 
-Ein frisch installiertes macOS benötigt nach dem Setup Assistant nur noch einen klar definierten Bootstrap-Prozess und wenige unvermeidbare Apple-, Login- und TCC-Schritte.
+Ein frisch installiertes macOS benötigt nach dem Setup Assistant nur noch einen klar definierten Bootstrap-Prozess und wenige unvermeidbare Apple-, Login-, Secret- und TCC-Schritte.

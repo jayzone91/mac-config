@@ -7,6 +7,7 @@
     ../../modules/darwin/security.nix
     ../../modules/darwin/updates.nix
     ../../modules/darwin/power.nix
+    ../../modules/darwin/homebrew.nix
   ];
 
   nix.enable = false;

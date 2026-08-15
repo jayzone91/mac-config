@@ -7,6 +7,7 @@
   ./modules/cli.nix
   ./modules/neovim.nix
   ./modules/ghostty.nix
+  ./modules/dev-tools.nix
   ];
 
   home = {

@@ -5,6 +5,8 @@
     inputs.home-manager.darwinModules.home-manager
     ../../modules/darwin/defaults
     ../../modules/darwin/security.nix
+    ../../modules/darwin/updates.nix
+    ../../modules/darwin/power.nix
   ];
 
   nix.enable = false;

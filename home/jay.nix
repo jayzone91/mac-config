@@ -17,6 +17,8 @@
       pkgs.ripgrep
       pkgs.just
     ];
+
+    file."Pictures/Screenshots/.keep".text = "";
   };
 
   programs = {

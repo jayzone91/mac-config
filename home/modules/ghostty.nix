@@ -15,6 +15,7 @@ _:
       window-padding-balance = true;
 
       macos-titlebar-style = "transparent";
+      macos-option-as-alt = "right";
 
       shell-integration = "detect";
 
@@ -23,10 +24,19 @@ _:
       split-inherit-working-directory = true;
 
       mouse-hide-while-typing = true;
-
       copy-on-select = false;
-
       confirm-close-surface = false;
+
+      quick-terminal-position = "top";
+      quick-terminal-size = "40%";
+      quick-terminal-screen = "main";
+      quick-terminal-autohide = true;
+      quick-terminal-space-behavior = "move";
+      quick-terminal-animation-duration = 0.15;
+
+      keybind = [
+      "global:ctrl+backquote=toggle_quick_terminal"
+      ];
     };
   };
 }

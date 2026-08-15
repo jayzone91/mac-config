@@ -1,17 +1,20 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
-  inputs.home-manager.darwinModules.home-manager
+    inputs.home-manager.darwinModules.home-manager
   ];
 
-nix.enable = false;
+  nix.enable = false;
 
   system.stateVersion = 6;
   system.primaryUser = "jay";
 
+  programs.fish.enable = true;
+
   users.users.jay = {
     home = "/Users/jay";
+    shell = pkgs.fish;
   };
 
   networking.hostName = "MacbookPro";

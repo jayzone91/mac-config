@@ -11,5 +11,15 @@
   };
 
   outputs = { self, nixpkgs, nix-darwin, ... }:
-  {};
+  {
+    darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+
+      modules = [
+      {
+        system.stateVersion = 6;
+      }
+      ];
+    };
+  };
 }

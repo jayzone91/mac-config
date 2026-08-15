@@ -78,6 +78,7 @@ Neovim-Konfiguration:
 
 ### Ghostty
 
+- [x] Ghostty-Installation über Homebrew
 - [x] Ghostty-Konfiguration über Home Manager
 - [x] Ghostty als eigenes Modul
 - [x] Catppuccin Light/Dark
@@ -99,7 +100,7 @@ Neovim-Konfiguration:
 
 ## macOS Systemeinstellungen
 
-Die wesentlichen Systemdefaults sind inzwischen deklarativ umgesetzt.
+Die wesentlichen Systemdefaults sind deklarativ umgesetzt.
 
 ### Allgemein
 
@@ -194,7 +195,7 @@ Editoren sollen Smart Quotes etc. selbst deaktivieren bzw. nicht verwenden.
 - [x] Firewall aktiv
 - [x] Stealth Mode aktiv
 - [x] signierte Apps erlaubt
-- [x] Touch ID für sudo
+- [x] Touch ID für `sudo`
 - [ ] FileVault Status prüfen
 - [ ] FileVault / Recovery-Key-Strategie festlegen
 - [x] Gatekeeper nicht deaktiviert
@@ -232,46 +233,164 @@ Nicht verändert:
 
 ---
 
-## Software
+## Softwareverwaltung
 
-### Behalten / installieren
+Zuständigkeiten:
 
-- [ ] Alfred
-- [ ] AppCleaner
-- [ ] Bloons TD 6+
-- [ ] DockDoor
-- [x] Ghostty vorhanden und konfiguriert
-- [ ] GitHub Desktop
-- [ ] Google Chrome Dev
-- [ ] OpenVPN Connect
-- [ ] Pages
-- [ ] Numbers
-- [ ] Keynote
-- [ ] Setapp
-- [ ] VS Code Stable
-- [ ] Windows App
-- [ ] AdGuard für Safari
+```text
+Nix / Home Manager
+└── CLI- und Developer-Tools
 
-### Setapp
+Homebrew
+└── GUI-Apps / Casks
+
+Mac App Store
+└── App-Store-Apps
+
+Setapp
+└── Setapp-Apps
+
+Apple / macOS
+└── Systemapps und Apple-ID-gebundene Komponenten
+```
+
+Doppelte Installation derselben Software über mehrere Paketmanager soll vermieden werden.
+
+---
+
+## Homebrew
+
+### Basis
+
+- [x] `nix-homebrew` eingebunden
+- [x] bestehende Homebrew-Installation migriert
+- [x] Apple-Silicon-Homebrew `/opt/homebrew`
+- [x] kein Rosetta-/Intel-Homebrew
+- [x] Homebrew über nix-darwin aktiviert
+- [x] alte CLI-Formulae bereinigt
+- [x] alte Drittanbieter-Taps entfernt
+- [x] CLI-Tools aus Homebrew nach Nix verschoben
+- [x] `cleanup = "uninstall"`
+- [ ] tägliche Homebrew-Updates automatisieren
+
+### Homebrew Casks
+
+Deklarativ verwaltet:
+
+- [x] AdGuard
+- [x] Alfred
+- [x] AppCleaner
+- [x] DockDoor
+- [x] Ghostty
+- [x] GitHub Desktop
+- [x] Google Chrome Dev
+- [x] OpenVPN Connect
+- [x] Setapp
+- [x] Visual Studio Code Stable
+
+Nicht mehr verwenden:
+
+- [x] cmux entfernt
+- [x] Flutter entfernt
+- [x] VS Code Insiders entfernt
+
+### Homebrew Formulae
+
+Globale Developer-CLI-Tools sollen nicht über Homebrew verwaltet werden.
+
+Bereinigt:
+
+- [x] asdf
+- [x] cmake
+- [x] composer
+- [x] eza
+- [x] fd
+- [x] fish
+- [x] fzf
+- [x] gh
+- [x] git
+- [x] go
+- [x] ImageMagick
+- [x] LuaRocks
+- [x] Neovim
+- [x] ninja
+- [x] nvm
+- [x] PHP
+- [x] pnpm
+- [x] Python
+- [x] ripgrep
+- [x] spaceship
+- [x] sqlc
+- [x] stow
+- [x] tree-sitter-cli
+- [x] wget
+- [x] wimlib
+- [x] zoxide
+- [x] verbliebene Formula-Abhängigkeiten bereinigt
+
+---
+
+## Mac App Store
+
+`mas` wird über Nix bereitgestellt.
+
+Deklarativ verwaltet:
+
+- [x] Bloons TD 6+
+  - ID `1584423325`
+- [x] Keynote
+  - ID `361285480`
+- [x] Numbers
+  - ID `361304891`
+- [x] Pages
+  - ID `409201541`
+- [x] Windows App
+  - ID `1295203466`
+
+Entfernt / nicht mehr installieren:
+
+- [x] Ghostery Privacy Ad Blocker
+- [x] Microsoft Excel
+- [x] WhatsApp
+- [x] Xcode Full App
+
+Xcode Command Line Tools bleiben als Systemvoraussetzung erhalten.
+
+---
+
+## Setapp
+
+Setapp selbst wird über Homebrew installiert.
 
 Behalten:
 
-- [ ] Bartender
-- [ ] CleanMyMac
-- [ ] iBoysoft NTFS
-- [ ] Mockuuups Studio
-- [ ] Nitro PDF Pro
-- [ ] PDF Squeezer
+- [x] Bartender
+- [x] CleanMyMac
+- [x] iBoysoft NTFS
+- [x] Mockuuups Studio
+- [x] Nitro PDF Pro
+- [x] PDF Squeezer
 
-Setapp Login/Aktivierung wird wahrscheinlich teilweise manuell bleiben.
+CleanMyMac:
+
+- behalten
+- kein automatischer Start erforderlich
+
+Setapp-Apps werden aktuell nicht pseudo-deklarativ automatisiert.
 
 Zu prüfen:
 
-- [ ] welche Setapp-Apps per CLI installierbar sind
-- [ ] welche Apps zwingend GUI benötigen
-- [ ] wie Setapp im Bootstrap installiert und gestartet wird
+- [ ] welche Setapp-Apps offiziell per CLI installierbar sind
+- [ ] welche Apps zwingend die Setapp-GUI benötigen
+- [ ] Setapp-Login im Bootstrap dokumentieren
+- [ ] gewünschte Setapp-Apps im Bootstrap als Checkliste anzeigen
+- [ ] prüfen, ob installierte Setapp-Apps automatisiert verifiziert werden können
 
-### Entfernen / nicht installieren
+Setapp Login/Aktivierung darf als manueller Bootstrap-Schritt bestehen bleiben.
+
+---
+
+## Entfernte / nicht mehr benötigte Software
 
 - [x] Bionic
 - [x] Cork
@@ -284,33 +403,28 @@ Zu prüfen:
 - [x] VS Code Insiders
 - [x] WakaTime
 - [x] Flutter
-- [x] Xcode vollständig
+- [x] Xcode Full App
 - [x] pnpm
 - [x] LuaRocks
 - [x] sqlc
 - [x] PHP
 - [x] Composer
 - [x] ImageMagick
-- [x] cmake als globales Paket
-- [x] ninja als globales Paket
+- [x] cmake global
+- [x] ninja global
 - [x] Go Tooling global
 - [x] air
 - [x] templ
 - [x] ginkgo
 - [x] mockgen
-
-Xcode Command Line Tools bleiben erforderlich.
+- [x] cmux
 
 ---
 
 ## Developer Tools
 
-Global vorhanden:
+### Bereits über Nix / Home Manager
 
-- [ ] git explizit über Nix verwalten
-- [ ] gh
-- [ ] wget
-- [ ] jq
 - [x] bat
 - [x] fd
 - [x] ripgrep
@@ -322,16 +436,43 @@ Global vorhanden:
 - [x] nixfmt
 - [x] just
 - [x] Neovim Nightly
+- [x] mas
+
+### Noch deklarativ fertigstellen
+
+- [ ] git
+- [ ] gh
+- [ ] wget
+- [ ] jq
+- [ ] tree-sitter-cli
 - [ ] direnv
 - [ ] nix-direnv
-- [ ] tree-sitter-cli
-- [ ] Node LTS
-- [ ] npm
-- [ ] Bun latest
-- [ ] Go latest
-- [ ] Python latest
 
-Projektabhängige Toolchains sollen in Projekt-Flakes liegen.
+### Toolchains
+
+Node:
+
+- [ ] aktuelle LTS-Linie bestimmen
+- [ ] Node LTS über Nix verwalten
+- [ ] npm über Node bereitstellen
+- [ ] tägliche Update-Prüfung
+
+Bun:
+
+- [ ] aktuelle stabile Version über Nix verwalten
+- [ ] tägliche Update-Prüfung
+
+Go:
+
+- [ ] aktuelle stabile Version über Nix verwalten
+- [ ] tägliche Update-Prüfung
+
+Python:
+
+- [ ] aktuelle stabile Version über Nix verwalten
+- [ ] tägliche Update-Prüfung
+
+Projektabhängige Toolchains und Spezialabhängigkeiten sollen möglichst in Projekt-Flakes liegen.
 
 Nicht global installieren:
 
@@ -350,95 +491,55 @@ Nicht global installieren:
 
 ---
 
-## Updates
+## Alfred
 
-### macOS
+### Installation
 
-- [x] automatische Prüfung
-- [x] automatische Downloads
-- [x] automatische macOS Updates
-- [x] Critical Updates
-- [x] ConfigData Updates
-- [x] App Store Auto-Updates
+- [x] Alfred über Homebrew vorgesehen
+- [x] Alfred installiert
+- [x] vorhandene Powerpack-Lizenz vorhanden und aktuell aktiviert
+- [ ] Autostart deklarativ konfigurieren
+- [ ] Preferences-/Sync-Strategie festlegen
 
-### mac-config
-
-Ziel:
-
-- [ ] tägliche Prüfung
-- [ ] `git pull --ff-only`
-- [ ] `nix flake update`
-- [ ] vollständiger Build
-- [ ] nur bei erfolgreichem Build aktivieren
-- [ ] Logging
-- [ ] Fehler sollen laufendes System nicht beschädigen
-- [ ] Cleanup
-- [ ] Rollback-Verhalten definieren
-
-### Homebrew
-
-- [ ] tägliches `brew update`
-- [ ] tägliches `brew upgrade`
-- [ ] Cask Updates
-- [ ] Formula Updates
-
-### Mac App Store
-
-- [ ] MAS Updates automatisieren
-
-### Toolchains
-
-Node:
-
-- [ ] aktuelle LTS-Linie automatisch verwalten
-- [ ] tägliche Update-Prüfung
-
-Bun:
-
-- [ ] aktuelle stabile Version automatisch verwalten
-- [ ] tägliche Update-Prüfung
-
-Go:
-
-- [ ] aktuelle stabile Version automatisch verwalten
-- [ ] tägliche Update-Prüfung
-
-Python:
-
-- [ ] aktuelle stabile Version automatisch verwalten
-- [ ] tägliche Update-Prüfung
-
-Neovim:
-
-- [x] Nightly über Flake/Input
-- [ ] Update-Automation über täglichen Flake-Update-Workflow
-
----
-
-## Homebrew
-
-Nächster großer Arbeitsblock.
+### Powerpack
 
 Ziel:
 
-- [ ] `nix-homebrew` einbinden
-- [ ] Homebrew automatisch installieren
-- [ ] `/opt/homebrew` auf Apple Silicon sauber verwalten
-- [ ] Formulae deklarativ verwalten
-- [ ] Casks deklarativ verwalten
-- [ ] MAS integrieren
-- [ ] `mas` verwalten
-- [ ] tägliche Updates
-- [ ] Cleanup
-- [ ] Ownership zwischen Nix und Brew klar trennen
+Die vorhandene Alfred-Powerpack-Lizenz soll auf einem neuen Mac möglichst komfortabel wieder aktiviert werden können, ohne die Lizenz im Klartext im Repository abzulegen.
 
-Zu entscheiden:
+- [ ] vorhandenen Alfred-5-Powerpack-Lizenzblock sicher erfassen
+- [ ] Lizenz als Secret behandeln
+- [ ] Lizenz verschlüsselt über sops-nix speichern
+- [ ] prüfen, ob Alfred eine offiziell unterstützte CLI-/URL-Aktivierung anbietet
+- [ ] keine undokumentierten plist-/defaults-Hacks verwenden
 
-- [ ] welche CLI-Tools über Nix laufen
-- [ ] welche GUI-Apps über Homebrew Casks laufen
-- [ ] welche Apps über MAS laufen
-- [ ] welche Apps über Setapp laufen
-- [ ] doppelte Installation derselben App verhindern
+Falls keine unterstützte automatische Aktivierung existiert:
+
+```text
+sops
+  ↓
+Alfred-Lizenz entschlüsseln
+  ↓
+temporär ins Clipboard
+  ↓
+Alfred Powerpack Preferences öffnen
+  ↓
+Lizenz einfügen
+  ↓
+Activate
+```
+
+Die entschlüsselte Lizenz soll:
+
+- nicht ins Repository geschrieben werden
+- nicht dauerhaft als Klartextdatei gespeichert werden
+- möglichst nur temporär im Clipboard existieren
+
+### Alfred Permissions
+
+- [ ] Accessibility/TCC prüfen
+- [ ] benötigte Alfred-Berechtigungen dokumentieren
+- [ ] manuelle TCC-Schritte in Bootstrap aufnehmen
 
 ---
 
@@ -457,7 +558,7 @@ Verschlüsseln:
 - [ ] Mail-Benutzernamen
 - [ ] Mail-Passwörter / App-Passwörter
 - [ ] ggf. IMAP/SMTP-Hosts
-- [ ] Alfred-Lizenz
+- [ ] Alfred-Powerpack-Lizenz
 - [ ] zukünftige API Keys
 
 Mail-Adressen sollen nicht im Klartext im Repository stehen.
@@ -467,6 +568,7 @@ Zu prüfen:
 - [ ] Apple Passwords als mögliche Secret-Quelle
 - [ ] GitHub Secrets nur für CI/CD verwenden
 - [ ] lokale Secrets unabhängig von GitHub verfügbar machen
+- [ ] Recovery-/Bootstrap-Strategie für age-Key
 
 ---
 
@@ -488,17 +590,54 @@ Zusätzliche Accounts:
 
 ---
 
-## Alfred
+## Updates
 
-- [ ] Installation automatisieren
-- [ ] Autostart
-- [ ] Preferences über iCloud oder deklarativ
-- [ ] vorhandene Powerpack-Lizenz automatisiert aktivieren
-- [ ] Lizenz aus bestehender Installation auslesen
-- [ ] Lizenz verschlüsselt speichern
-- [ ] unterstützte Aktivierungsmöglichkeiten prüfen
-- [ ] Accessibility/TCC bleibt ggf. manuell
-- [ ] Alfred-TCC-Schritte dokumentieren
+### macOS
+
+- [x] automatische Prüfung
+- [x] automatische Downloads
+- [x] automatische macOS Updates
+- [x] Critical Updates
+- [x] ConfigData Updates
+- [x] App Store Auto-Updates
+
+### mac-config / Nix
+
+Ziel:
+
+- [ ] tägliche Prüfung
+- [ ] `git pull --ff-only`
+- [ ] `nix flake update`
+- [ ] vollständiger Build
+- [ ] nur bei erfolgreichem Build aktivieren
+- [ ] Logging
+- [ ] Fehler sollen laufendes System nicht beschädigen
+- [ ] Cleanup
+- [ ] Rollback-Verhalten definieren
+
+### Homebrew
+
+- [ ] tägliches `brew update`
+- [ ] tägliches `brew upgrade`
+- [ ] Cask Updates
+- [ ] Formula Updates, falls künftig Formulae benötigt werden
+- [ ] Cleanup
+
+Homebrew soll nicht bei jedem `darwin-rebuild` ungefragt Updates durchführen.
+
+### Mac App Store
+
+- [x] automatische App-Store-Updates über macOS aktiviert
+- [ ] Verhalten mit deklarativen `masApps` auf neuem System testen
+
+### Neovim
+
+- [x] Nightly über Flake/Input
+- [ ] Update über täglichen Flake-Update-Workflow automatisieren
+
+### Toolchains
+
+Node, Bun, Go und Python sollen über den täglichen Nix-/Flake-Update-Workflow aktuell gehalten werden.
 
 ---
 
@@ -521,10 +660,16 @@ Soll:
 - [ ] Fish in `/etc/shells` eintragen
 - [ ] Fish als Login-Shell setzen
 - [ ] Secrets initialisieren
+- [ ] age-Key bereitstellen
 - [ ] App Store Login voraussetzen/prüfen
 - [ ] Homebrew initialisieren
+- [ ] MAS-Apps installieren
 - [ ] Setapp vorbereiten
+- [ ] Setapp Login anfordern
+- [ ] gewünschte Setapp-Apps prüfen
+- [ ] Alfred-Powerpack-Aktivierung unterstützen
 - [ ] Ghostty TCC/Accessibility-Schritt ausgeben
+- [ ] Alfred TCC/Accessibility-Schritte ausgeben
 - [ ] weitere manuelle TCC-Schritte ausgeben
 - [ ] Abschlussprüfung
 
@@ -574,13 +719,13 @@ Aktuell bekannt:
 - [ ] App Store Login
 - [ ] Setapp Login
 - [ ] ggf. Setapp App-Aktivierungen
-- [ ] ggf. Alfred Accessibility
-- [ ] ggf. Alfred Lizenzaktivierung
+- [ ] Alfred Accessibility
+- [ ] Alfred Powerpack-Aktivierung, falls keine unterstützte Automation existiert
 - [ ] Mail-Passwort-/Profil-Aktivierung
 - [ ] FileVault Recovery-Key-Handling
 - [ ] weitere TCC-Berechtigungen
 
-Diese Schritte sollen später im Bootstrap klar ausgegeben werden.
+Diese Schritte sollen später im Bootstrap klar und nacheinander ausgegeben werden.
 
 ---
 
@@ -632,6 +777,7 @@ mac-config/
 │       ├── shell.nix
 │       ├── starship.nix
 │       ├── cli.nix
+│       ├── dev-tools.nix
 │       ├── neovim.nix
 │       └── ghostty.nix
 └── modules/
@@ -655,30 +801,31 @@ mac-config/
 
 ## Nächste Schritte
 
-### 1. Homebrew / Softwareverwaltung
+### 1. Developer Toolchains
 
-- `nix-homebrew`
-- Casks
-- Formulae
-- MAS
-- Zuständigkeit pro App festlegen
-- bestehende Softwareliste gegen aktuellen Mac prüfen
-
-### 2. Developer Toolchains
-
+- git / gh / wget / jq / tree-sitter
+- direnv / nix-direnv
 - Node LTS
 - npm
 - Bun
 - Go
 - Python
-- direnv / nix-direnv
 
-### 3. Secrets
+### 2. Secrets
 
 - sops-nix
 - age
+- Bootstrap-/Recovery-Strategie
 - Mail-Secrets
-- Alfred-Lizenz
+- Alfred-Powerpack-Lizenz
+
+### 3. Alfred
+
+- Autostart
+- Preferences
+- Powerpack-Lizenz aus bestehender Installation übernehmen
+- Aktivierungsworkflow
+- TCC
 
 ### 4. Mail
 
@@ -686,17 +833,33 @@ mac-config/
 - Profile
 - Provisionierung
 
-### 5. Automatische Updates
+### 5. Setapp Bootstrap
+
+- Login
+- App-Prüfung
+- verbleibende manuelle Schritte
+
+### 6. Automatische Updates
 
 - mac-config
 - Nix Flakes
 - Homebrew
-- MAS
 - Toolchains
-- Logging / Rollback
+- Logging
+- Rollback
 
-### 6. Finaler Bootstrap
+### 7. Restliche macOS-Details
+
+- Sprache/Region
+- Zeitzone
+- `.DS_Store`
+- Dock-Inhalt
+- Widgets
+- FileVault
+- weitere TCC-Berechtigungen
+
+### 8. Finaler Bootstrap
 
 Ziel:
 
-Ein frisch installiertes macOS benötigt nach dem Setup Assistant nur noch einen klar definierten Bootstrap-Prozess und wenige unvermeidbare manuelle Apple-/TCC-Schritte.
+Ein frisch installiertes macOS benötigt nach dem Setup Assistant nur noch einen klar definierten Bootstrap-Prozess und wenige unvermeidbare Apple-, Login- und TCC-Schritte.

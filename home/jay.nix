@@ -2,12 +2,12 @@
 
 {
   imports = [
-  ./modules/shell.nix
-  ./modules/starship.nix
-  ./modules/cli.nix
-  ./modules/neovim.nix
-  ./modules/ghostty.nix
-  ./modules/dev-tools.nix
+    ./modules/shell.nix
+    ./modules/starship.nix
+    ./modules/cli.nix
+    ./modules/neovim.nix
+    ./modules/ghostty.nix
+    ./modules/dev-tools.nix
   ];
 
   home = {

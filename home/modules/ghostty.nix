@@ -7,7 +7,7 @@ _:
 
     settings = {
       font-size = 14;
-      
+
       theme = "light:Catppuccin Latte,dark:Catppuccin Mocha";
 
       window-padding-x = 10;
@@ -35,7 +35,7 @@ _:
       quick-terminal-animation-duration = 0.15;
 
       keybind = [
-      "global:ctrl+shift+space=toggle_quick_terminal"
+        "global:ctrl+shift+space=toggle_quick_terminal"
       ];
     };
   };

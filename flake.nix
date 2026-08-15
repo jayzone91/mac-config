@@ -29,7 +29,7 @@
       };
 
       modules = [
-      ./hosts/MacbookPro
+        ./hosts/MacbookPro
       ];
 
     };

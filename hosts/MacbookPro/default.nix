@@ -8,6 +8,7 @@
     ../../modules/darwin/updates.nix
     ../../modules/darwin/power.nix
     ../../modules/darwin/homebrew.nix
+    ../../modules/darwin/mas.nix
   ];
 
   nix.enable = false;
@@ -24,7 +25,6 @@
 
   networking.hostName = "MacbookPro";
   networking.localHostName = "MacbookPro";
-
 
   home-manager = {
     useGlobalPkgs = true;

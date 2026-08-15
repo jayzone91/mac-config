@@ -1,15 +1,25 @@
 {pkgs, ...}:
 
 {
-  home.packages = [
-  pkgs.git
-  pkgs.gh
-  pkgs.wget
-  pkgs.jq
-  pkgs.tree-sitter
-  pkgs.mas
+  home.packages = with pkgs; [
+    # General development
+    git
+    gh
+    wget
+    jq
+    tree-sitter
 
-  pkgs.go
-  pkgs.python3
+    # Toolchains
+    go
+    python3
+    nodejs_24
+    bun
   ];
+
+  programs.direnv = {
+    enable = true;
+    enableFishIntegration = true;
+
+    nix-direnv.enable = true;
+  };
 }

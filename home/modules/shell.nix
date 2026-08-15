@@ -1,18 +1,18 @@
 _:
 
 {
-programs = {
+  programs = {
     fish = {
       enable = true;
 
       interactiveShellInit = ''
-        set -g fish_greeting
-        set -gx EDITOR nvim
-        set -gx VISUAL nvim
+      set -g fish_greeting
+      set -gx EDITOR nvim
+      set -gx VISUAL nvim
       '';
 
       shellAbbrs = {
-        g = "git"; 
+        g = "git";
         gs = "git status";
         ga = "git add";
         gc = "git commit";
@@ -28,7 +28,7 @@ programs = {
       };
     };
 
-        zoxide = {
+    zoxide = {
       enable = true;
       enableFishIntegration = true;
     };
@@ -37,5 +37,5 @@ programs = {
       enable = true;
       enableFishIntegration = true;
     };
-};
+  };
 }

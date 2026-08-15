@@ -1,8 +1,8 @@
-  _:
+_:
 
-  {
-    programs = {
-  starship = {
+{
+  programs = {
+    starship = {
       enable = true;
       enableFishIntegration = true;
 
@@ -12,7 +12,7 @@
         palette = "catppuccin_mocha";
 
         format = ''
-              [╭─](overlay0)$os$username$hostname$directory$git_branch$git_status$nodejs$golang$cmd_duration$line_break[╰─](overlay0)$character
+        [╭─](overlay0)$os$username$hostname$directory$git_branch$git_status$nodejs$golang$cmd_duration$line_break[╰─](overlay0)$character
         '';
 
         palettes.catppuccin_mocha = {
@@ -48,7 +48,7 @@
           disabled = false;
           style = "bold blue";
           format = "[$symbol]($style)";
-          
+
           symbols = {
             Macos = "";
           };
@@ -67,68 +67,68 @@
         };
 
         directory = {
-      style = "bold blue";
-      truncation_length = 4;
-      truncate_to_repo = false;
-      read_only = " ";
-      read_only_style = "red";
-      format = "[$path]($style)[$read_only]($read_only_style) ";
+          style = "bold blue";
+          truncation_length = 4;
+          truncate_to_repo = false;
+          read_only = " ";
+          read_only_style = "red";
+          format = "[$path]($style)[$read_only]($read_only_style) ";
 
-      substitutions = {
-        Documents = "󰈙 ";
-        Downloads = " ";
-        Music = " ";
-        Pictures = " ";
+          substitutions = {
+            Documents = "󰈙 ";
+            Downloads = " ";
+            Music = " ";
+            Pictures = " ";
+          };
+        };
+
+        git_branch = {
+          symbol = " ";
+          style = "bold mauve";
+          format = "on [$symbol$branch]($style) ";
+        };
+
+        git_status = {
+          style = "bold yellow";
+          format = "([$all_status$ahead_behind]($style) )";
+
+          conflicted = "=\${count}";
+          ahead = "⇡\${count}";
+          behind = "⇣\${count}";
+          diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
+          untracked = "?\${count}";
+          stashed = "󰏗 \${count}";
+          modified = "!\${count}";
+          staged = "+\${count}";
+          renamed = "»\${count}";
+          deleted = "✘\${count}";
+        };
+
+        nodejs = {
+          symbol = " ";
+          style = "bold green";
+          format = "via [$symbol($version)]($style) ";
+        };
+
+        golang = {
+          symbol = " ";
+          style = "bold sky";
+          format = "via [$symbol($version)]($style) ";
+        };
+
+        cmd_duration = {
+          min_time = 1500;
+          style = "yellow";
+          format = "took [$duration]($style) ";
+        };
+
+        character = {
+          success_symbol = "[❯](bold green)";
+          error_symbol = "[❯](bold red)";
+          vimcmd_symbol = "[❮](bold mauve)";
+        };
       };
     };
 
-    git_branch = {
-      symbol = " ";
-      style = "bold mauve";
-      format = "on [$symbol$branch]($style) ";
-    };
-
-git_status = {
-  style = "bold yellow";
-  format = "([$all_status$ahead_behind]($style) )";
-
-  conflicted = "=\${count}";
-  ahead = "⇡\${count}";
-  behind = "⇣\${count}";
-  diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
-  untracked = "?\${count}";
-  stashed = "󰏗 \${count}";
-  modified = "!\${count}";
-  staged = "+\${count}";
-  renamed = "»\${count}";
-  deleted = "✘\${count}";
-};
-
-    nodejs = {
-      symbol = " ";
-      style = "bold green";
-      format = "via [$symbol($version)]($style) ";
-    };
-
-    golang = {
-      symbol = " ";
-      style = "bold sky";
-      format = "via [$symbol($version)]($style) ";
-    };
-
-    cmd_duration = {
-      min_time = 1500;
-      style = "yellow";
-      format = "took [$duration]($style) ";
-    };
-
-    character = {
-      success_symbol = "[❯](bold green)";
-      error_symbol = "[❯](bold red)";
-      vimcmd_symbol = "[❮](bold mauve)";
-    };
-      };
-    };
-
-    };
-  }
+  };
+}

@@ -16,9 +16,7 @@
       system = "aarch64-darwin";
 
       modules = [
-      {
-        system.stateVersion = 6;
-      }
+      ./hosts/MacbookPro
       ];
     };
   };

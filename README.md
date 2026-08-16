@@ -165,6 +165,8 @@ Global über Nix:
 - Go
 - Python
 
+Node wird aktuell bewusst auf der LTS-Major-Linie 24 gehalten.
+
 Projektabhängige Tools und spezielle Toolchains sollen möglichst in den jeweiligen Projekt-Flakes definiert werden.
 
 ### Homebrew
@@ -188,9 +190,11 @@ CLI-Tools sollen nicht parallel über Homebrew und Nix installiert werden.
 
 ### Mac App Store
 
-Mac-App-Store-Anwendungen werden über das nix-darwin-Modul `programs.mas` verwaltet.
+Mac-App-Store-Anwendungen werden über das native nix-darwin-Modul `programs.mas` verwaltet.
 
-Aktuell:
+`mas` selbst wird über Nix bereitgestellt und nicht zusätzlich über Homebrew installiert.
+
+Aktuell verwaltet:
 
 - Bloons TD 6+
 - Keynote
@@ -214,6 +218,8 @@ Dazu gehören unter anderem:
 - Mockuuups Studio
 - Nitro PDF Pro
 - PDF Squeezer
+
+Die Anmeldung bei Setapp und gegebenenfalls einzelne App-Aktivierungen bleiben Bestandteil des Bootstrap-Prozesses.
 
 ---
 
@@ -239,9 +245,84 @@ Einige macOS-Funktionen wie TCC-/Accessibility-Berechtigungen können nicht voll
 
 ---
 
+## Shell
+
+Fish wird über Home Manager konfiguriert und als Login-Shell verwendet.
+
+Die Shell-Umgebung umfasst unter anderem:
+
+- Fish
+- Starship
+- fzf
+- zoxide
+- eza
+- bat
+- fd
+- ripgrep
+
+Da der macOS-Benutzer bereits vor nix-darwin existiert, muss Fish auf einem frisch installierten System einmalig als erlaubte Login-Shell registriert und anschließend für den Benutzer gesetzt werden.
+
+Die vollständigen Schritte befinden sich in [`bootstrap/README.md`](bootstrap/README.md).
+
+---
+
+## Ghostty
+
+Ghostty selbst wird als Homebrew-Cask installiert.
+
+Die Konfiguration wird deklarativ über Home Manager verwaltet.
+
+Unter anderem konfiguriert:
+
+- Fish Shell Integration
+- Catppuccin Light/Dark
+- Nerd-Font-Unterstützung
+- Tabs und Splits
+- Clipboard-Verhalten
+- Working-Directory-Vererbung
+- Quick Terminal
+- globaler Quick-Terminal-Shortcut `Ctrl+Shift+Space`
+- linke Option-Taste als Alt
+
+Für den globalen Shortcut ist einmalig eine macOS-Accessibility-/TCC-Berechtigung erforderlich.
+
+---
+
+## Neovim
+
+Die Neovim-Konfiguration wird separat gepflegt:
+
+https://github.com/jayzone91/nvim
+
+Neovim Nightly selbst sowie die für Nix benötigten Werkzeuge werden über diese macOS-Konfiguration bereitgestellt.
+
+Die Neovim-Konfiguration enthält unter anderem Unterstützung für:
+
+- Nix LSP über `nil`
+- `statix`
+- `nixfmt`
+
+Die lokale Neovim-Konfiguration befindet sich unter:
+
+```text
+~/Documents/GitHub/nvim
+```
+
+und wird über `~/.config/nvim` verwendet.
+
+---
+
 ## Justfile
 
-Die häufigsten Befehle sind über `just` verfügbar.
+Die häufigsten Verwaltungsbefehle sind über `just` verfügbar.
+
+Ohne Recipe:
+
+```sh
+just
+```
+
+zeigt die verfügbaren Befehle an.
 
 ### Konfiguration prüfen
 
@@ -249,7 +330,13 @@ Die häufigsten Befehle sind über `just` verfügbar.
 just check
 ```
 
-Führt einen Flake-Check durch, ohne die Konfiguration anzuwenden.
+Führt aus:
+
+```sh
+nix flake check
+```
+
+Die Konfiguration wird geprüft, aber nicht aktiviert.
 
 ### System bauen
 
@@ -257,15 +344,45 @@ Führt einen Flake-Check durch, ohne die Konfiguration anzuwenden.
 just build
 ```
 
-Baut die nix-darwin-Konfiguration.
+Führt aus:
 
-### System anwenden
+```sh
+nix build .#darwinConfigurations.MacbookPro.system
+```
+
+Die vollständige Systemkonfiguration wird gebaut, aber noch nicht aktiviert.
+
+### System aktivieren
+
+```sh
+just switch
+```
+
+Führt aus:
+
+```sh
+sudo darwin-rebuild switch --flake .#MacbookPro
+```
+
+Die aktuelle Konfiguration wird gebaut und aktiviert.
+
+### Prüfen, bauen und aktivieren
 
 ```sh
 just apply
 ```
 
-Baut und aktiviert die aktuelle Konfiguration.
+führt nacheinander aus:
+
+```text
+check
+↓
+build
+↓
+switch
+```
+
+Dies ist der normale Weg, um Änderungen an der Systemkonfiguration anzuwenden.
 
 ### Flake aktualisieren
 
@@ -273,23 +390,31 @@ Baut und aktiviert die aktuelle Konfiguration.
 just update
 ```
 
-Aktualisiert die Flake-Inputs.
+Führt aus:
 
-### Formatieren
+```sh
+nix flake update
+```
+
+### Nix-Dateien formatieren
 
 ```sh
 just fmt
 ```
 
-Formatiert die Nix-Konfiguration.
+Formatiert die Nix-Dateien mit `nixfmt`.
 
-### Status
+### Git-Status
 
 ```sh
 just status
 ```
 
-Zeigt den aktuellen Repository-Status.
+Führt aus:
+
+```sh
+git status --short
+```
 
 ### Garbage Collection
 
@@ -297,7 +422,11 @@ Zeigt den aktuellen Repository-Status.
 just gc
 ```
 
-Bereinigt nicht mehr benötigte Nix-Generationen bzw. Store-Einträge.
+Führt aus:
+
+```sh
+nix store gc
+```
 
 ---
 
@@ -309,7 +438,7 @@ Nach Änderungen an der Konfiguration grundsätzlich zuerst:
 just check
 ```
 
-Wenn der Check erfolgreich ist:
+Für einen vollständigen Test und die anschließende Aktivierung:
 
 ```sh
 just apply
@@ -323,9 +452,9 @@ Anschließend die betroffene Funktion prüfen.
 
 ## Secrets
 
-Secrets sollen mit `sops-nix` und `age` verwaltet werden.
+Secrets werden zukünftig mit `sops-nix` und `age` verwaltet.
 
-Das Repository enthält ausschließlich verschlüsselte Secret-Dateien.
+Das Git-Repository soll ausschließlich verschlüsselte Secret-Dateien enthalten.
 
 Geplant sind unter anderem:
 
@@ -335,26 +464,96 @@ Geplant sind unter anderem:
 - Alfred-Powerpack-Lizenz
 - zukünftige API-Keys
 
-Der private age-Key darf niemals im Repository gespeichert werden.
-
-### Recovery
-
-Der private age-Key wird lokal auf dem Mac gespeichert und zusätzlich als Recovery-Kopie in Apple Passwords / iCloud Keychain hinterlegt.
-
-Damit ergibt sich:
+### Sicherheitsmodell
 
 ```text
 Git Repository
-└── verschlüsselte Secrets
-
+└── verschlüsselte secrets/secrets.yaml
+        │
+        │ verschlüsselt für öffentlichen age-Recipient
+        ↓
 Mac
 └── privater age-Key
-
+        │
+        │ Recovery-Kopie
+        ↓
 Apple Passwords / iCloud Keychain
-└── Recovery-Kopie des privaten age-Keys
 ```
 
-Die vollständige Schritt-für-Schritt-Anleitung zum Erzeugen und Wiederherstellen des Keys wird in [`bootstrap/README.md`](bootstrap/README.md) dokumentiert.
+Der private age-Key darf niemals im Repository gespeichert werden.
+
+### Lokaler age-Key
+
+Der private Schlüssel wird auf dem Mac unter:
+
+```text
+~/Library/Application Support/sops/age/keys.txt
+```
+
+gespeichert.
+
+Der öffentliche `age1...`-Recipient darf dagegen im Repository stehen und wird später in `.sops.yaml` verwendet.
+
+### Recovery
+
+Eine Recovery-Kopie des privaten age-Keys wird in Apple Passwords / iCloud Keychain gespeichert.
+
+Auf einem neuen Mac ist damit nur ein einmaliger Recovery-Schritt erforderlich:
+
+```text
+Apple ID anmelden
+        ↓
+Apple Passwords synchronisieren
+        ↓
+age-Key wiederherstellen
+        ↓
+sops-nix kann Repository-Secrets entschlüsseln
+```
+
+Die vollständige Schritt-für-Schritt-Anleitung zum Erzeugen, Sichern und Wiederherstellen des age-Keys befindet sich in:
+
+[`bootstrap/README.md`](bootstrap/README.md)
+
+---
+
+## Alfred
+
+Alfred wird über Homebrew installiert.
+
+Die vorhandene Powerpack-Lizenz soll später verschlüsselt über `sops-nix` verwaltet werden.
+
+Geplanter Wiederherstellungsprozess:
+
+```text
+sops-nix
+   ↓
+Powerpack-Lizenz entschlüsseln
+   ↓
+temporär bereitstellen
+   ↓
+Alfred Powerpack aktivieren
+```
+
+Falls Alfred keine offiziell unterstützte automatisierte Aktivierung anbietet, wird die Lizenz nur temporär in die Zwischenablage gelegt und anschließend manuell in Alfred eingefügt.
+
+Undokumentierte Änderungen an Alfred-Plists oder internen Aktivierungsdaten sollen vermieden werden.
+
+Zusätzlich können einmalige Accessibility-/TCC-Berechtigungen erforderlich sein.
+
+---
+
+## Sicherheit
+
+Die Konfiguration setzt unter anderem:
+
+- macOS Firewall
+- Stealth Mode
+- Gatekeeper
+- Touch ID für `sudo`
+- zukünftig verschlüsselte Secret-Verwaltung
+- keine Klartext-Secrets im Repository
+
+FileVault und die Recovery-Key-Strategie werden noch separat umgesetzt.
 
 ---
 
@@ -385,7 +584,9 @@ nix-darwin aktivieren
         ↓
 Fish als Login-Shell
         ↓
-App Store / Setapp
+App Store anmelden
+        ↓
+Setapp anmelden
         ↓
 TCC-Berechtigungen
         ↓
@@ -394,44 +595,21 @@ Alfred Powerpack
 fertiges System
 ```
 
-Einige Schritte wie Apple-ID-Anmeldung, TCC-Berechtigungen oder bestimmte Lizenzaktivierungen bleiben zwangsläufig interaktiv.
+Einige Schritte bleiben zwangsläufig interaktiv:
 
----
-
-## Neovim
-
-Die Neovim-Konfiguration wird separat gepflegt:
-
-https://github.com/jayzone91/nvim
-
-Neovim selbst sowie die für Nix benötigten Werkzeuge werden über diese macOS-Konfiguration bereitgestellt.
-
-Die Neovim-Konfiguration enthält unter anderem Unterstützung für:
-
-- Nix LSP über `nil`
-- `statix`
-- `nixfmt`
-
----
-
-## Sicherheit
-
-Die Konfiguration setzt unter anderem:
-
-- macOS Firewall
-- Stealth Mode
-- Gatekeeper
-- Touch ID für `sudo`
-- verschlüsselte Secret-Verwaltung
-- keine Klartext-Secrets im Repository
-
-FileVault und die Recovery-Key-Strategie werden noch separat umgesetzt.
+- Apple-ID-/iCloud-Anmeldung
+- App-Store-Anmeldung
+- Setapp-Anmeldung
+- Wiederherstellung des age-Keys
+- TCC-/Accessibility-Berechtigungen
+- gegebenenfalls Alfred-Powerpack-Aktivierung
+- spätere Mail-Account-Aktivierung
 
 ---
 
 ## Updates
 
-macOS-System- und Security-Updates sind automatisch aktiviert.
+macOS-System-, Security- und App-Store-Updates sind automatisch aktiviert.
 
 Geplant ist zusätzlich ein automatisierter Update-Workflow für:
 
@@ -449,7 +627,28 @@ Homebrew
 └── Cleanup
 ```
 
+Node, Bun, Go, Python und weitere Nix-Pakete sollen über den Flake-Update-Workflow aktuell gehalten werden.
+
+Bei Node soll zusätzlich berücksichtigt werden, wenn zukünftig eine neue LTS-Major-Linie verfügbar wird.
+
 Ein fehlgeschlagenes Update darf die aktuell funktionierende Systemgeneration nicht beschädigen.
+
+---
+
+## Bekannte Build-Warnung
+
+Aktuell kann beim Build folgende Warnung erscheinen:
+
+```text
+Using 'builtins.derivation' to create a derivation named 'options.json'
+that references the store path '...-source' without a proper context.
+The resulting derivation will not have a correct store reference,
+so this is unreliable and may stop working in the future.
+```
+
+Der Build funktioniert trotzdem.
+
+Die Warnung wird aktuell nicht durch einen lokalen Workaround unterdrückt und soll bei zukünftigen Updates von nixpkgs, Home Manager und nix-darwin erneut geprüft werden.
 
 ---
 
@@ -459,7 +658,15 @@ Die vollständige Roadmap befindet sich in:
 
 [`ROADMAP.md`](ROADMAP.md)
 
-Sie enthält sowohl den aktuellen Stand als auch alle noch geplanten Arbeiten.
+Sie enthält:
+
+- bereits umgesetzte Funktionen
+- aktuellen Projektstand
+- noch offene Aufgaben
+- geplante Bootstrap-Schritte
+- bekannte Warnungen
+
+Die README beschreibt dagegen primär Architektur und Benutzung des fertigen Systems.
 
 ---
 

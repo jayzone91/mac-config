@@ -1,5 +1,4 @@
-_:
-{
+_: {
   imports = [
     ./global.nix
     ./finder.nix

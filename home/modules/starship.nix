@@ -12,7 +12,7 @@ _:
         palette = "catppuccin_mocha";
 
         format = ''
-        [╭─](overlay0)$os$username$hostname$directory$git_branch$git_status$nodejs$golang$cmd_duration$line_break[╰─](overlay0)$character
+          [╭─](overlay0)$os$username$hostname$directory$git_branch$git_status$nodejs$golang$cmd_duration$line_break[╰─](overlay0)$character
         '';
 
         palettes.catppuccin_mocha = {

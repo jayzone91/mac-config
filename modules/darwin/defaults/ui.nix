@@ -1,5 +1,4 @@
-_:
-{
+_: {
   system.defaults = {
     screencapture = {
       location = "~/Pictures/Screenshots";

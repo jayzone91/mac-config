@@ -9,6 +9,7 @@
     ../../modules/darwin/power.nix
     ../../modules/darwin/homebrew.nix
     ../../modules/darwin/mas.nix
+    ../../modules/darwin/secrets.nix
   ];
 
   nix.enable = false;

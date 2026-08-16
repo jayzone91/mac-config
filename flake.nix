@@ -14,24 +14,35 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, ... }:
-  {
-    darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nix-darwin,
+      ...
+    }:
+    {
+      darwinConfigurations.MacbookPro = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
 
-      specialArgs = {
-        inherit inputs;
+        specialArgs = {
+          inherit inputs;
+        };
+
+        modules = [
+          ./hosts/MacbookPro
+        ];
+
       };
-
-      modules = [
-        ./hosts/MacbookPro
-      ];
-
     };
-  };
 }

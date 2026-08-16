@@ -1,5 +1,4 @@
-_:
-{
+_: {
   system.defaults = {
     dock = {
       mru-spaces = false;
